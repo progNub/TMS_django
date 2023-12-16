@@ -1,5 +1,5 @@
 """
-URL configuration for djangoProject project.
+URL configuration for Lesson21_Django project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/5.0/topics/http/urls/
@@ -17,6 +17,21 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from posts.views import home_page_view, create_note_view, show_note_view, show_about_view, delete_note_view, \
+    edit_note_view
+
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls),  # Подключение панели администратора.
+
+    path("", home_page_view, name="home"),  # Добавим главную страницу.
+
+    path("create", create_note_view, name="create-note"),
+    path("note/<note_uuid>", show_note_view, name="show-note"),
+
+    path('edit/<note_uuid>', edit_note_view, name='edit-note'),
+
+    path('delete/<note_uuid>', delete_note_view, name='delete-note'),
+
+    path('about', show_about_view, name='about'),
+
 ]

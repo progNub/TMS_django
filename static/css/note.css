@@ -1,0 +1,20 @@
+.container{
+    min-height: 40rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.btn-group{
+    align-self: flex-end;
+    width: 210px;
+    justify-content: space-between;
+}
+
+.button{
+ min-width: 100px ;
+}
+
+.btn{
+    width: 100%;
+
+}
