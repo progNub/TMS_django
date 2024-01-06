@@ -22,3 +22,26 @@
 .form-button:hover {
     box-shadow: 0 0 5px 3px rgba(138, 138, 138, 0.4);
 }
+
+
+.containerShowInputImage {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.containerInputImage {
+    flex-grow: 3;
+}
+
+.container_image {
+    text-align: end;
+    flex-grow: 2;
+    height: 300px;
+    overflow: hidden;
+}
+
+.previewImage {
+    height: 100%;
+    width: auto;
+}
