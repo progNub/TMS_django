@@ -1,4 +1,3 @@
-
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.http import HttpResponseRedirect, HttpResponseForbidden
@@ -7,7 +6,7 @@ from django.utils import timezone
 
 from django.contrib.auth.decorators import login_required
 
-from .models import Note
+from .models import Note, delete_old_image
 
 
 def home_page_view(request: WSGIRequest):
@@ -46,11 +45,14 @@ def edit_note_view(request: WSGIRequest, note_uuid):
         return HttpResponseForbidden('Нет прав')
 
     if request.method == 'POST':
-        if not (request.POST['title'] == note.title and request.POST['content'] == note.content
-                and note.image == request.FILES.get('noteImage')):
+        if not (request.POST['title'] == note.title and request.POST['content'] == note.content and
+                not (request.FILES.get('noteImage'))):
+
             note.title = request.POST['title']
             note.content = request.POST['content']
-            note.image = request.FILES.get("noteImage")
+            if request.FILES.get('noteImage'):
+                delete_old_image(note)
+                note.image = request.FILES.get("noteImage")
             note.mod_time = timezone.now()
             note.save()
         else:

@@ -45,9 +45,8 @@ def delete_image_after_delete_post(sender, instance: Note, **kwargs):
         file_path.rmdir()
 
 
-@receiver(pre_save, sender=Note)
-def delete_old_image(sender, instance: Note, **kwargs):
-    file_path = (settings.MEDIA_ROOT / str(instance.uuid))
+def delete_old_image(note: Note):
+    file_path = (settings.MEDIA_ROOT / str(note.uuid))
     if file_path.exists():
         for file in file_path.iterdir():
             file.unlink(missing_ok=False)
