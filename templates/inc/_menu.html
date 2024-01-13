@@ -25,7 +25,9 @@
 
 				{% if request.user.is_authenticated %}
 					<li class="nav-item">
-						<a class="nav-link">{{ request.user.username }}</a>
+						<a class="nav-link"
+						   href="{% url 'list-posts-user' request.user.username %}">{{ request.user.username }}: my
+							notes</a>
 					</li>
 					<li class="nav-item">
 						<form action="{% url 'logout' %}" method="post">
@@ -42,7 +44,11 @@
 					</li>
 
 				{% endif %}
-
+				{% if request.user.is_staff %}
+					<li class="nav-item">
+						<a class="nav-link" href="{%  url 'admin:index' %}">Admin manage</a>
+					</li>
+				{% endif %}
 			</ul>
 
 
