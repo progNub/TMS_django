@@ -11,9 +11,7 @@ from .models import Note, delete_old_image
 
 def home_page_view(request: WSGIRequest):
     # Обязательно! каждая функция view должна принимать первым параметром request.
-    all_notes = Note.objects.all().select_related('autor').values(
-        'uuid', 'title', 'content', 'created_at', 'autor__username')[
-                :1000]  # Получение всех записей из таблицы этой модели.
+    all_notes = Note.objects.all()  # Получение всех записей из таблицы этой модели.
     context: dict = {
         "notes": all_notes
     }
@@ -21,7 +19,7 @@ def home_page_view(request: WSGIRequest):
 
 
 def show_note_view(request: WSGIRequest, note_uuid):
-    note = get_object_or_404(Note.objects.select_related('autor'), uuid=note_uuid)
+    note = get_object_or_404(Note, uuid=note_uuid)
     return render(request, "note.html", {"note": note})
 
 
@@ -78,9 +76,8 @@ def show_about_view(request: WSGIRequest):
 
 
 def list_posts_user(request: WSGIRequest, username):
+    notes = Note.objects.filter(autor__username=username)
     context: dict = {
-        "notes": Note.objects.filter(autor__username=username)
-        .select_related('autor')
-        .values('uuid', 'title', 'content', 'created_at', 'autor__username')
+        "notes": notes
     }
     return render(request, "home.html", context)
