@@ -1,8 +1,9 @@
+import os
 import uuid
 
 from django.contrib.auth import get_user_model
 from django.db import models
-from django.db.models.signals import post_delete
+from django.db.models.signals import post_delete, pre_save
 from django.conf import settings
 from django.dispatch import receiver
 
@@ -20,8 +21,7 @@ class Note(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(max_length=255)
     content = models.TextField()
-    created_at = models.DateTimeField(
-        auto_now_add=True)  # если запустить файл testFaker то нужно убрать auto_now_add=True
+    created_at = models.DateTimeField(auto_now_add=True)
     mod_time = models.DateTimeField(null=True, default=None)
     autor = models.ForeignKey(User, default=None, null=True, on_delete=models.CASCADE)
     image = models.ImageField(upload_to=upload_to, null=True, verbose_name='Изображение')
@@ -31,10 +31,6 @@ class Note(models.Model):
     class Meta:
         verbose_name = 'Запись'
         verbose_name_plural = 'Записи'
-        ordering = ('-created_at',)
-        indexes = [
-            models.Index(fields=('created_at',), name='created_at_index'),
-        ]
 
     def __str__(self):
         return self.title
